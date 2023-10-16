@@ -6,7 +6,7 @@ import {
 }
 from '@mui/material';
 import './userList.css';
-import fetchModel from "../../../../../../Downloads/project-5-solution/Project_5/lib/fetchModelData";
+import fetchModel from '../../lib/fetchModelData';
 
 /**
  * Define UserList, a React component of project #5

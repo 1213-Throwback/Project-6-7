@@ -4,7 +4,7 @@ import {
   ImageList, ImageListItem
 } from '@mui/material';
 import './userPhotos.css';
-import fetchModel from "../../../../../../Downloads/project-5-solution/Project_5/lib/fetchModelData";
+import fetchModel from '../../lib/fetchModelData';
 
 
 /**

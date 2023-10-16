@@ -5,7 +5,7 @@ import {
     TextField
 } from '@mui/material';
 import './userDetail.css';
-import fetchModel from "../../../../../../Downloads/project-5-solution/Project_5/lib/fetchModelData";
+import fetchModel from '../../lib/fetchModelData';
 
 /**
  * Define UserDetail, a React component of project #5
