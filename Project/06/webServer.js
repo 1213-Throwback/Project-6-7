@@ -254,7 +254,7 @@ app.get("/user/:p1", function (request, response) {
 
 
 app.get("/photosOfUser/:id", function (request, response) {
-  const param = request.params.p1 || "info";
+  const param = request.params.p1;
   Photo.aggregate([
     { "$match":
           {"user_id": {"$eq": new mongoose.Types.ObjectId(param)}}
@@ -302,7 +302,7 @@ app.get("/photosOfUser/:id", function (request, response) {
         "comments.user.__v": 0
       } }
   ]
-  )
+  );
 });
 
 const server = app.listen(3000, function () {

@@ -4,7 +4,7 @@ import {
     Typography
 } from '@mui/material';
 import './userPhotos.css';
-import fetchModel from '../../lib/fetchModelData';
+import axios from 'axios';
 
 /**
  * Define UserPhotos, a React componment of project #5
@@ -13,44 +13,48 @@ class UserPhotos extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user:null,
+            user: null,
+            userPhotos: [],
         };
     }
 
     componentDidMount() {
+        let photoHolder = null;
         const userId = this.props.match.params.userId;
-        // Fetch user details
-        fetchModel(`/user/${userId}`)
+        //Fetch user photos
+        axios.get(`/photosOfUser/${userId}`)
             .then(response => {
-                console.log(response.data);
-                this.setState({
-                    user: response.data
-                });
+                console.log("Photos:",response.data);
+                photoHolder = response.data;
             })
             .catch(error => console.error(error));
 
-        // Fetch user photos
-        // fetchModel(`/photosOfUser/${userId}`)
-        //     .then(response => {
-        //         console.log(response.data);
-        //         this.setState({
-        //             userPhotos: response.data
-        //         });
-        //     })
-        //     .catch(error => console.error(error));
-        // this.render();
-    }
+        // Fetch user details
+        axios.get(`/user/${userId}`)
+            .then(response => {
+                console.log("User info:", response.data);
+                this.setState({
+                    userPhotos: photoHolder,
+                    user: response.data
+                });
+
+            })
+            .catch(error => console.error(error));
+
+
+    };
 
     render() {
         const user = this.user
         if(!user){
+            console.log("Waiting for info")
             return null;
         }
 
         const userId = this.props.match.params.userId;
         let detailLink = "#/users/" + userId;
-        let photosList = window.models.photoOfUserModel(userId);
-        let photos = photosList.map((photo, index) => (
+        console.log(this.userPhotos);
+        let photos = this.userPhotos.map((photo, index) => (
             <div className={"PhotoDiv"}>
                 <p className={"PhotoDate"}>Posted on: {photo.date_time}</p>
                 <img key={`${photo._id}`} src={"images/" + photo.file_name} alt={`${user.first_name}#${index}`} className={"Photo"}/>
