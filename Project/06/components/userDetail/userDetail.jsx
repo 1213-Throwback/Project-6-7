@@ -1,22 +1,30 @@
 import React from 'react';
 import {
-    Box,
     Button,
-    TextField
+    Typography
 } from '@mui/material';
 import './userDetail.css';
 import fetchModel from '../../lib/fetchModelData';
+
 
 /**
  * Define UserDetail, a React component of project #5
  */
 class UserDetail extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            user: undefined
-        };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+        user:null
+    };
+  }
+
+/*
+        This should be the UserDetail view of the PhotoShare app. Since
+        it is invoked from React Router the params from the route will be
+        in property match. So this should show details of user:
+        {this.props.match.params.userId}. You can fetch the model for the
+        user from window.models.userModel(userId).
+ */
     componentDidMount() {
         const new_user_id = this.props.match.params.userId;
         this.handleUserChange(new_user_id);
@@ -39,50 +47,30 @@ class UserDetail extends React.Component {
                     user: new_user
                 });
                 const main_content = "User Details for " + new_user.first_name + " " + new_user.last_name;
-                this.props.changeMainContent(main_content);
             });
     }
 
-    render() {
-        return this.state.user ? (
-            <div>
-                <Box component="form" noValidate autoComplete="off">
-                    <div>
-                        <Button variant="contained" component="a" href={"#/photos/" + this.state.user._id}>
-                            User Photos
-                        </Button>
-                    </div>
-                    <div>
-                        <TextField id="first_name" label="First Name" variant="outlined" disabled fullWidth
-                                   margin="normal"
-                                   value={this.state.user.first_name}/>
-                    </div>
-                    <div>
-                        <TextField id="last_name" label="Last Name" variant="outlined" disabled fullWidth
-                                   margin="normal"
-                                   value={this.state.user.last_name}/>
-                    </div>
-                    <div>
-                        <TextField id="location" label="Location" variant="outlined" disabled fullWidth
-                                   margin="normal"
-                                   value={this.state.user.location}/>
-                    </div>
-                    <div>
-                        <TextField id="description" label="Description" variant="outlined" multiline rows={4}
-                                   disabled
-                                   fullWidth margin="normal" value={this.state.user.description}/>
-                    </div>
-                    <div>
-                        <TextField id="occupation" label="Occupation" variant="outlined" disabled fullWidth
-                                   margin="normal"
-                                   value={this.state.user.occupation}/>
-                    </div>
-                </Box>
-            </div>
-        ) : (
-            <div/>
-        );
-    }
+  render() {
+        const {user} = this.state;
+
+        if(!user){
+            return null;
+        }
+
+    const photosLink = "#/photos/" + user._id;
+
+    return (
+        <div className = "user-detail">
+            <Button href={photosLink}>User Photos</Button>
+            <p className={"PageOwner"}>{user.first_name + " " + user.last_name + "'s Profile"}</p>
+            <Typography variant = {'caption'} className={"User-ID"}>{`User ID: ${user._id}`}</Typography>
+            <hr/>
+            <Typography variant = 'body1' className={"Location"}>{`Location: ${user.location}`}</Typography>
+            <Typography variant = 'body1' className={"Occupation"}>{`Occupation: ${user.occupation}`}</Typography>
+            <Typography variant = 'body1' className={"Description"}>{`Description: ${user.description}`}</Typography>
+        </div>
+    );
+  }
 }
 
 export default UserDetail;

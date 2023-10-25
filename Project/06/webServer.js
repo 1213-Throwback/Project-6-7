@@ -140,7 +140,6 @@ app.get("/test/:p1", function (request, response) {
   }
 });
 
-
 app.get("/user/list", function (request, response) {
   // Express parses the ":p1" from the URL and returns it in the request.params
   // objects.

@@ -5,6 +5,7 @@ module.exports = {
         userDetail: './components/userDetail/userDetail.jsx',
         userPhotos: './components/userPhotos/userPhotos.jsx',
         userList: './components/userList/userList.jsx',
+        photoShare: './photoShare.jsx',
 
     },
     plugins: [

@@ -1,11 +1,10 @@
 import React from 'react';
 import {
-  Button, TextField,
-  ImageList, ImageListItem
+    Button, TextField,
+    Typography
 } from '@mui/material';
 import './userPhotos.css';
 import fetchModel from '../../lib/fetchModelData';
-
 
 /**
  * Define UserPhotos, a React componment of project #5
@@ -13,90 +12,77 @@ import fetchModel from '../../lib/fetchModelData';
 class UserPhotos extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            user_id : undefined,
-            photos: undefined
-        };
-    }
-
-    componentDidMount() {
-        const new_user_id = this.props.match.params.userId;
-        this.handleUserChange(new_user_id);
-    }
-
-    componentDidUpdate() {
-        const new_user_id = this.props.match.params.userId;
-        const current_user_id = this.state.user_id;
-        if (current_user_id  !== new_user_id){
-            this.handleUserChange(new_user_id);
-        }
-    }
-
-    handleUserChange(user_id){
-        fetchModel("/photosOfUser/" + user_id)
-            .then((response) =>
-            {
-                this.setState({
-                    user_id : user_id,
-                    photos: response.data
-                });
-            });
-        fetchModel("/user/" + user_id)
-            .then((response) =>
-            {
-                const new_user = response.data;
-                const main_content = "User Photos for " + new_user.first_name + " " + new_user.last_name;
-                this.props.changeMainContent(main_content);
-            });
     }
 
     render() {
-        return this.state.user_id ? (
-            <div>
-                <div>
-                    <Button variant="contained" component="a" href={"#/users/" + this.state.user_id}>
-                        User Detail
-                    </Button>
-                </div>
-                <ImageList variant="masonry" cols={1} gap={8}>
-                    {this.state.photos.map((item) => (
-                        <div key={item._id}>
-                            <TextField id="date" label="Photo Date" variant="outlined" disabled fullWidth margin="normal"
-                                       value={item.date_time} />
-                            <ImageListItem key={item.file_name}>
-                                <img
-                                    src={`images/${item.file_name}`}
-                                    srcSet={`images/${item.file_name}`}
-                                    alt={item.file_name}
-                                    loading="lazy"
-                                />
-                            </ImageListItem>
-                            {item.comments ?
-                                item.comments.map((comment) => (
-                                    <div key={comment._id}>
-                                        <TextField id="date" label="Comment Date" variant="outlined" disabled fullWidth
-                                                   margin="normal" value={comment.date_time} />
-                                        <TextField id="user" label="User" variant="outlined" disabled fullWidth
-                                                   margin="normal"
-                                                   value={comment.user.first_name + " " + comment.user.last_name}
-                                                   component="a" href={"#/users/" + comment.user._id}/>
-                                        <TextField id="comment" label="Comment" variant="outlined" disabled fullWidth
-                                                   margin="normal" multiline rows={4} value={comment.comment} />
-                                    </div>
-                                ))
-                                : (
-                                    <div>
-                                        <TextField id="comment" label="No Comments" variant="outlined" disabled fullWidth
-                                                   margin="normal" />
-                                    </div>
-                                )}
+        const userId = this.props.match.params.userId;
+        const user = window.models.userModel(userId);
+        let detailLink = "#/users/" + userId;
+
+        let photosList = window.models.photoOfUserModel(userId);
+        let photos = photosList.map((photo, index) => (
+            <div className={"PhotoDiv"}>
+                <p className={"PhotoDate"}>Posted on: {photo.date_time}</p>
+                <img key={`${photo._id}`} src={"images/" + photo.file_name} alt={`${user.first_name}#${index}`} className={"Photo"}/>
+
+                {photo.comments ?
+                    photo.comments.map((comment) => (
+                        <div key={comment._id} className={"Comments"}>
+                            <h3 key = "user" className={"User"}>
+                                <a href={"#/users/" + comment.user._id}> {comment.user.first_name + " " + comment.user.last_name}</a>
+                            </h3>
+                            <p key = "date" className={"date"}>
+                                 {comment.date_time}
+                                <hr/>
+                            </p>
+                            <p key= "comment" className={"Comment"}>
+                                {comment.comment}
+                            </p>
                         </div>
-                    ))}
-                </ImageList>
+                    ))
+                    : (
+                        <div className={"Comments"}>
+                            <p id={"NoComment"}>
+                                No Comments
+                            </p>
+                        </div>
+                    )}
             </div>
-        ) : (
-            <div/>
+        ));
+
+
+        return (
+            <div>
+                <Button href={detailLink}>User Details</Button>
+                <p className={"PageOwner"}>{user.first_name + " " + user.last_name + "'s Photos"}</p>
+                {photos.map((photo, index) => (
+                    <div key={index} >{photo}</div>
+                ))}
+            </div>
         );
+    }
+
+    componentDidMount() {
+        const userId = this.props.match.params.userId;
+
+
+        // Fetch user details
+        fetchModel(`/user/${userId}`)
+            .then(response => {
+                this.setState({
+                    user: response.data
+                });
+            })
+            .catch(error => console.error(error));
+
+        // Fetch user photos
+        fetchModel(`/photosOfUser/${userId}`)
+            .then(response => {
+                this.setState({
+                    userPhotos: response.data
+                });
+            })
+            .catch(error => console.error(error));
     }
 }
 

@@ -1,0 +1,73 @@
+html{
+    font-family: "Work Sans", "myriad-pro", sans-serif;
+}
+.PhotoDate{
+    padding-top: 5px;
+    padding-left: 20px;
+    font-size: 10px;
+    font-family: sans-serif;
+}
+.Photo{
+    margin-left: 10px;
+    width: auto;
+    height: auto;
+    max-width: 65vw;
+    max-height: 500px;
+    margin-bottom: 10px;
+    object-fit: contain;
+}
+img{
+    border-radius: 10px;
+}
+.noComments{
+    font-size: 10px;
+    font-family: sans-serif;
+    padding-left: 10px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    color: lightslategrey;
+}
+
+.PhotoDiv{
+    border-radius: 20px;
+    background-color: lightgrey;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+.User a,.User a:hover,.User a:focus,.User a:active {
+    font-style: normal;
+    color: black;
+    font-size: 15px;
+    text-decoration:none;
+}
+.PageOwner{
+    font-size: 30px;
+    padding-bottom: 3px;
+    margin: 0;
+}
+
+
+h3{
+    margin: 0;
+}
+p{
+    margin-bottom: 0px;
+    margin-top: 3px
+}
+.date{
+    font-size: 10px;
+    font-family: sans-serif;
+}
+hr{
+    margin-bottom: 3px;
+    margin-top: 3px;
+    color: black;
+    border-color: black;
+}
+.Comments{
+    background-color: darkgray;
+    border-radius: 20px;
+    margin: 10px;
+    padding: 10px;
+}
+
