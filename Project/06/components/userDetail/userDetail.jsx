@@ -44,8 +44,6 @@ class UserDetail extends React.Component {
             fetchModel("/user/" + user_id)
                 .then((response) => {
                     const new_user = response.data;
-                    console.log(new_user);
-                    console.log("write success");
                     this.setState({
                         user: new_user,
                         userID: new_user._id

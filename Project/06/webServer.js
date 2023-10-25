@@ -44,6 +44,8 @@ const User = require("./schema/user.js");
 const Photo = require("./schema/photo.js");
 const SchemaInfo = require("./schema/schemaInfo.js");
 const ObjectId = require('mongodb').ObjectId;
+const Type = require('mongodb').Type;
+
 
 // XXX - Your submission should work without this line. Comment out or delete
 // this line for tests and before submission!
@@ -101,7 +103,7 @@ app.get("/test/:p1", function (request, response) {
       }
 
       // We got the object - return it in JSON format.
-      console.log("SchemaInfo", info[0]);
+      console.log("SchemaInfo\n\n");
       response.end(JSON.stringify(info[0]));
     });
   } else if (param === "counts") {
@@ -144,8 +146,6 @@ app.get("/test/:p1", function (request, response) {
 app.get("/user/list", function (request, response) {
   // Express parses the ":p1" from the URL and returns it in the request.params
   // objects.
-  console.log("/user/list called with param1 = ", request.params.p1);
-  console.log("Yes")
 
   const param = request.params.p1 || "info";
 
@@ -168,7 +168,7 @@ app.get("/user/list", function (request, response) {
     }
 
     // We got the object - return it in JSON format.
-    console.log("SchemaInfo List Fetch", info , "\n\n");
+    console.log("SchemaInfo List Fetch\n\n");
     response.end(JSON.stringify(info));
   });
 });
@@ -202,7 +202,7 @@ app.get("/user/:p1", function (request, response) {
       }
 
       // We got the object - return it in JSON format.
-      console.log("SchemaInfo Sepcific Fetch", info[0], "\n\n");
+      console.log("SchemaInfo Sepcific Fetch\n\n");
       response.end(JSON.stringify(info[0]));
     });
   } else if (param === "counts") {
@@ -251,15 +251,58 @@ app.get("/user/:p1", function (request, response) {
 /**
  * URL /photosOfUser/:id - Returns the Photos for User (id).
  */
+
+
 app.get("/photosOfUser/:id", function (request, response) {
-  const id = request.params.id;
-  const photos = models.photoOfUserModel(id);
-  if (photos.length === 0) {
-    console.log("Photos for user with _id:" + id + " not found.");
-    response.status(400).send("Not found");
-    return;
-  }
-  response.status(200).send(photos);
+  const param = request.params.p1 || "info";
+  Photo.aggregate([
+    { "$match":
+          {"user_id": {"$eq": new mongoose.Types.ObjectId(param)}}
+    },
+    { "$addFields": {
+        "comments": { "$ifNull" : [ "$comments", [ ] ] }
+      } },
+    { "$lookup": {
+        "from": "users",
+        "localField": "comments.user_id",
+        "foreignField": "_id",
+        "as": "users"
+      } },
+    { "$addFields": {
+        "comments": {
+          "$map": {
+            "input": "$comments",
+            "in": {
+              "$mergeObjects": [
+                "$$this",
+                { "user": {
+                    "$arrayElemAt": [
+                      "$users",
+                      {
+                        "$indexOfArray": [
+                          "$users._id",
+                          "$$this.user_id"
+                        ]
+                      }
+                    ]
+                  } }
+              ]
+            }
+          }
+        }
+      } },
+    { "$project": {
+        "users": 0,
+        "__v": 0,
+        "comments.__v": 0,
+        "comments.user_id": 0,
+        "comments.user.location": 0,
+        "comments.user.description": 0,
+        "comments.user.occupation": 0,
+        "comments.user.__v": 0
+      } }
+  ]
+  )
 });
 
 const server = app.listen(3000, function () {

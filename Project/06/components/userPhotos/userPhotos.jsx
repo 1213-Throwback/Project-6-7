@@ -12,13 +12,43 @@ import fetchModel from '../../lib/fetchModelData';
 class UserPhotos extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            user:null,
+        };
+    }
+
+    componentDidMount() {
+        const userId = this.props.match.params.userId;
+        // Fetch user details
+        fetchModel(`/user/${userId}`)
+            .then(response => {
+                console.log(response.data);
+                this.setState({
+                    user: response.data
+                });
+            })
+            .catch(error => console.error(error));
+
+        // Fetch user photos
+        // fetchModel(`/photosOfUser/${userId}`)
+        //     .then(response => {
+        //         console.log(response.data);
+        //         this.setState({
+        //             userPhotos: response.data
+        //         });
+        //     })
+        //     .catch(error => console.error(error));
+        // this.render();
     }
 
     render() {
-        const userId = this.props.match.params.userId;
-        const user = window.models.userModel(userId);
-        let detailLink = "#/users/" + userId;
+        const user = this.user
+        if(!user){
+            return null;
+        }
 
+        const userId = this.props.match.params.userId;
+        let detailLink = "#/users/" + userId;
         let photosList = window.models.photoOfUserModel(userId);
         let photos = photosList.map((photo, index) => (
             <div className={"PhotoDiv"}>
@@ -62,28 +92,7 @@ class UserPhotos extends React.Component {
         );
     }
 
-    componentDidMount() {
-        const userId = this.props.match.params.userId;
 
-
-        // Fetch user details
-        fetchModel(`/user/${userId}`)
-            .then(response => {
-                this.setState({
-                    user: response.data
-                });
-            })
-            .catch(error => console.error(error));
-
-        // Fetch user photos
-        fetchModel(`/photosOfUser/${userId}`)
-            .then(response => {
-                this.setState({
-                    userPhotos: response.data
-                });
-            })
-            .catch(error => console.error(error));
-    }
 }
 
 export default UserPhotos;
