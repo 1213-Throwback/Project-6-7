@@ -83,6 +83,7 @@ app.get("/test/:p1", function (request, response) {
   if (param === "info") {
     // Fetch the SchemaInfo. There should only one of them. The query of {} will
     // match it.
+    //HERE
     SchemaInfo.find({}, function (err, info) {
       if (err) {
         // Query returned an error. We pass it back to the browser with an
@@ -138,6 +139,41 @@ app.get("/test/:p1", function (request, response) {
     response.status(400).send("Bad param " + param);
   }
 });
+
+
+app.get("/user/list", function (request, response) {
+  // Express parses the ":p1" from the URL and returns it in the request.params
+  // objects.
+  console.log("/test called with param1 = ", request.params.p1);
+  console.log("Yes")
+
+  const param = request.params.p1 || "info";
+
+  // Fetch the SchemaInfo. There should only one of them. The query of {} will
+  // match it.
+  //HERE
+  User.find({}, {"_id": 1, "first_name": 1, "last_name": 1}, function (err, info) {
+    if (err) {
+      // Query returned an error. We pass it back to the browser with an
+      // Internal Service Error (500) error code.
+      console.error("Error in /user/info:", err);
+      response.status(500).send(JSON.stringify(err));
+      return;
+    }
+    if (info.length === 0) {
+      // Query didn't return an error but didn't find the SchemaInfo object -
+      // This is also an internal error return.
+      response.status(500).send("Missing SchemaInfo");
+      return;
+    }
+
+    // We got the object - return it in JSON format.
+    console.log("SchemaInfo", info);
+    response.end(JSON.stringify(info));
+  });
+});
+
+
 
 /**
  * URL /user/list - Returns all the User objects.

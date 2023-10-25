@@ -5,8 +5,11 @@ import {
   ListItemText,
 }
 from '@mui/material';
+import SchemaInfo from '../../schema/schemaInfo';
+import User from '../../schema/user';
 import './userList.css';
 import fetchModel from '../../lib/fetchModelData';
+
 
 /**
  * Define UserList, a React component of project #5
@@ -53,6 +56,9 @@ class UserList extends React.Component {
   render() {
     return this.state.users ?(
         <div>
+            <p>{SchemaInfo.collection}</p>
+            <p>{User.collection}</p>
+
         <List component="nav">
             {
                 this.state.users.map(user => (
