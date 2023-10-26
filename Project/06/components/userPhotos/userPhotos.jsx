@@ -5,6 +5,7 @@ import {
 } from '@mui/material';
 import './userPhotos.css';
 import axios from 'axios';
+import userPhotos from "../../../p5/project-5-solution/components/userPhotos/userPhotos";
 
 /**
  * Define UserPhotos, a React componment of project #5
@@ -14,47 +15,58 @@ class UserPhotos extends React.Component {
         super(props);
         this.state = {
             user: null,
-            userPhotos: [],
+            user_id: null,
+            userPhotos: []
         };
     }
 
+
+    handleChange(id){
+        if(id !== this.state.user_id){
+            //Fetch user photos
+            axios.get(`/photosOfUser/${id}`)
+                .then(response => {
+                    console.log("Photos:",response.data);
+                    this.setState({
+                        userPhotos: response.data,
+                    });
+                })
+                .catch(error => console.error(error));
+
+            // Fetch user details
+            axios.get(`/user/${id}`)
+                .then(response => {
+                    console.log("User info:", response.data);
+                    this.setState({
+                        user: response.data,
+                        user_id: response.data._id
+                    });
+
+                })
+                .catch(error => console.error(error));
+        }
+    }
     componentDidMount() {
-        let photoHolder = null;
-        const userId = this.props.match.params.userId;
-        //Fetch user photos
-        axios.get(`/photosOfUser/${userId}`)
-            .then(response => {
-                console.log("Photos:",response.data);
-                photoHolder = response.data;
-            })
-            .catch(error => console.error(error));
-
-        // Fetch user details
-        axios.get(`/user/${userId}`)
-            .then(response => {
-                console.log("User info:", response.data);
-                this.setState({
-                    userPhotos: photoHolder,
-                    user: response.data
-                });
-
-            })
-            .catch(error => console.error(error));
-
-
+        this.handleChange(this.props.match.params.userId);
     };
+
+    componentDidUpdate() {
+
+    }
 
     render() {
         const user = this.user
         if(!user){
             console.log("Waiting for info")
-            return null;
+            return (<div></div>);
         }
 
         const userId = this.props.match.params.userId;
         let detailLink = "#/users/" + userId;
         console.log(this.userPhotos);
+        userPhotos
         let photos = this.userPhotos.map((photo, index) => (
+
             <div className={"PhotoDiv"}>
                 <p className={"PhotoDate"}>Posted on: {photo.date_time}</p>
                 <img key={`${photo._id}`} src={"images/" + photo.file_name} alt={`${user.first_name}#${index}`} className={"Photo"}/>
