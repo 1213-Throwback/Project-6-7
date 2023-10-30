@@ -5,7 +5,6 @@ import {
 } from '@mui/material';
 import './userPhotos.css';
 import axios from 'axios';
-import userPhotos from "../../../p5/project-5-solution/components/userPhotos/userPhotos";
 
 /**
  * Define UserPhotos, a React componment of project #5
@@ -64,7 +63,6 @@ class UserPhotos extends React.Component {
         const userId = this.props.match.params.userId;
         let detailLink = "#/users/" + userId;
         console.log(this.userPhotos);
-        userPhotos
         let photos = this.userPhotos.map((photo, index) => (
 
             <div className={"PhotoDiv"}>
