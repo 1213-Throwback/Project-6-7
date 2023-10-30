@@ -1,7 +1,5 @@
-/* jshint node: true */
-
 /**
- * This Node.js program loads Project 7 model data into Mongoose
+ * This Node.js program loads the Project 6 model data into Mongoose
  * defined objects in a MongoDB database. It can be run with the command:
  *     node loadDatabase.js
  * be sure to have an instance of the MongoDB running on the localhost.
@@ -12,31 +10,31 @@
  * discarded.
  *
  * NOTE: This scripts uses Promise abstraction for handling the async calls to
- * the database. We are not teaching Promises so strongly suggest you
+ * the database. We are not teaching Promises in CS so strongly suggest you
  * don't use them in your solution.
  */
 
 // We use the Mongoose to define the schema stored in MongoDB.
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
 mongoose.set("strictQuery", false);
-mongoose.connect("mongodb://localhost/project6", {
+mongoose.connect("mongodb://127.0.0.1/project6", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
 // Get the magic models we used in the previous projects.
-var models = require("./modelData/photoApp.js").models;
+const models = require("./modelData/photoApp.js").models;
 
 // Load the Mongoose schema for Use and Photo
-var User = require("./schema/user.js");
-var Photo = require("./schema/photo.js");
-var SchemaInfo = require("./schema/schemaInfo.js");
+const User = require("./schema/user.js");
+const Photo = require("./schema/photo.js");
+const SchemaInfo = require("./schema/schemaInfo.js");
 
-var versionString = "1.0";
+const versionString = "1.0";
 
 // We start by removing anything that existing in the collections.
-var removePromises = [
+const removePromises = [
   User.deleteMany({}),
   Photo.deleteMany({}),
   SchemaInfo.deleteMany({}),
@@ -48,17 +46,15 @@ Promise.all(removePromises)
     // the assigned '_id' back into the model.userListModels so we have it
     // later in the script.
 
-    var userModels = models.userListModel();
-    var mapFakeId2RealId = {};
-    var userPromises = userModels.map(function (user) {
+    const userModels = models.userListModel();
+    const mapFakeId2RealId = {};
+    const userPromises = userModels.map(function (user) {
       return User.create({
         first_name: user.first_name,
         last_name: user.last_name,
         location: user.location,
         description: user.description,
         occupation: user.occupation,
-        login_name: user.last_name.toLowerCase(),
-        password: "weak",
       })
         .then(function (userObj) {
           // Set the unique ID of the object. We use the MongoDB generated _id
@@ -79,18 +75,17 @@ Promise.all(removePromises)
         });
     });
 
-    var allPromises = Promise.all(userPromises).then(function () {
+    const allPromises = Promise.all(userPromises).then(function () {
       // Once we've loaded all the users into the User collection we add all the
       // photos. Note that the user_id of the photo is the MongoDB assigned id
       // in the User object.
-      var photoModels = [];
-      var userIDs = Object.keys(mapFakeId2RealId);
-      for (var i = 0; i < userIDs.length; i++) {
-        photoModels = photoModels.concat(
-          models.photoOfUserModel(userIDs[i])
-        );
-      }
-      var photoPromises = photoModels.map(function (photo) {
+      const photoModels = [];
+      const userIDs = Object.keys(mapFakeId2RealId);
+      userIDs.forEach(function (id) {
+        photoModels.push(...models.photoOfUserModel(id));
+      });
+
+      const photoPromises = photoModels.map(function (photo) {
         return Photo.create({
           file_name: photo.file_name,
           date_time: photo.date_time,
