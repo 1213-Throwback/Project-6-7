@@ -35,7 +35,7 @@
  *        user: {object} The user info (see userMode for format) who made the comment
  *        photo_id: (string) - The ID of the photo the comment belongs to.
  *
- * Models.schemaModel - A function that returns the test info from the fake schema.
+ * Models.schemaModel - A function that returns the test (from project 06) info from the fake schema.
  *                           The function returns an object containing:
  *   _id (string) - The ID of the schema
  *   __v (number) - The version number
@@ -44,7 +44,7 @@
  * 
  */
 (function() {
-   // Create fake test Schema
+   // Create fake test (from project 06) Schema
    var schemaInfo = {
       load_date_time: "Fri Apr 29 2016 01:45:15 GMT-0700 (PDT)",
       __v: 0,

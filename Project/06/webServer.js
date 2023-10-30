@@ -13,10 +13,10 @@
  * This webServer exports the following URLs:
  * /            - Returns a text status message. Good for testing web server
  *                running.
- * /test        - Returns the SchemaInfo object of the database in JSON format.
+ * /test (from project 06)        - Returns the SchemaInfo object of the database in JSON format.
  *                This is good for testing connectivity with MongoDB.
- * /test/info   - Same as /test.
- * /test/counts - Returns the population counts of the cs collections in the
+ * /test (from project 06)/info   - Same as /test (from project 06).
+ * /test (from project 06)/counts - Returns the population counts of the cs collections in the
  *                database. Format is a JSON object with properties being the
  *                collection name and the values being the counts.
  *
@@ -66,20 +66,20 @@ app.get("/", function (request, response) {
 
 /**
  * Use express to handle argument passing in the URL. This .get will cause
- * express to accept URLs with /test/<something> and return the something in
+ * express to accept URLs with /test (from project 06)/<something> and return the something in
  * request.params.p1.
  * 
  * If implement the get as follows:
- * /test        - Returns the SchemaInfo object of the database in JSON format.
+ * /test (from project 06)        - Returns the SchemaInfo object of the database in JSON format.
  *                This is good for testing connectivity with MongoDB.
- * /test/info   - Same as /test.
- * /test/counts - Returns an object with the counts of the different collections
+ * /test (from project 06)/info   - Same as /test (from project 06).
+ * /test (from project 06)/counts - Returns an object with the counts of the different collections
  *                in JSON format.
  */
 app.get("/test/:p1", function (request, response) {
   // Express parses the ":p1" from the URL and returns it in the request.params
   // objects.
-  console.log("/test called with param1 = ", request.params.p1);
+  console.log("/test (from project 06) called with param1 = ", request.params.p1);
 
   const param = request.params.p1 || "info";
 

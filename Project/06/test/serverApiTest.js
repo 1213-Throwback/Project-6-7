@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * Mocha test of Project 6 web API.  To run type
+ * Mocha test (from project 06) of Project 6 web API.  To run type
  *   node_modules/.bin/mocha serverApiTest.js
  */
 
@@ -46,7 +46,7 @@ function removeMongoProperties(model) {
 }
 
 describe("Photo App: Web API Tests", function () {
-  describe("test using model data", function (done) {
+  describe("test (from project 06) using model data", function (done) {
     it("webServer does not use model data", function (done) {
       fs.readFile("../webServer.js", function (err, data) {
         if (err) throw err;
@@ -61,7 +61,7 @@ describe("Photo App: Web API Tests", function () {
     });
   });
 
-  describe("test /user/list", function (done) {
+  describe("test (from project 06) /user/list", function (done) {
     let userList;
     const Users = models.userListModel();
 
@@ -137,7 +137,7 @@ describe("Photo App: Web API Tests", function () {
     });
   });
 
-  describe("test /user/:id", function (done) {
+  describe("test (from project 06) /user/:id", function (done) {
     let userList;
     const Users = models.userListModel();
 
@@ -244,7 +244,7 @@ describe("Photo App: Web API Tests", function () {
     });
   });
 
-  describe("test /photosOfUser/:id", function (done) {
+  describe("test (from project 06) /photosOfUser/:id", function (done) {
     let userList;
     const Users = models.userListModel();
 
