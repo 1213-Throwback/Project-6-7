@@ -6,11 +6,14 @@ const mongoose = require("mongoose");
  * Define the Mongoose Schema for a Comment.
  */
 const userSchema = new mongoose.Schema({
+  username: { type: String, unique: true, required: true },
+  password: { type: String, required: true},
   first_name: String,
   last_name: String,
   location: String,
   description: String,
   occupation: String,
+  isLoggedIn: {type: Boolean, default: false },
   // The following attributes need to be added
   _id: mongoose.Schema.Types.ObjectId,
 });
