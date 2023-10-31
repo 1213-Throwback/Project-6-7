@@ -45,7 +45,7 @@ const Photo = require("./schema/photo.js");
 const SchemaInfo = require("./schema/schemaInfo.js");
 const ObjectId = require('mongodb').ObjectId;
 const Type = require('mongodb').Type;
-
+const router = express.Router();
 
 // XXX - Your submission should work without this line. Comment out or delete
 // this line for tests and before submission!
@@ -56,9 +56,40 @@ mongoose.connect("mongodb://127.0.0.1/project6", {
   useUnifiedTopology: true,
 });
 
+router.post('/login', (req, res) => {
+  const {username, password} = req.body;
+
+  User.findOne({username,password}, (err,user) => {
+    if(err){
+      return res.status(500).json({message: 'Server error'});
+    }
+
+    if(user){
+      user.isLoggedIn = true;
+      user.save((saveErr) => {
+        if(saveErr){
+          return res.status(500).json({ message: 'Failed to save login status' });
+        }
+        return res.status(200).json({ message: 'Login successful' });
+      });
+    }
+    else {
+      return res.status(401).json({ message: 'Login failed' });
+    }
+  });
+});
+
+router.post('/logout', (req, res) => {
+  return res.status(200).json({ message: 'Logout successful' });
+});
+
+module.exports = router;
+
+app.use('/auth', router)
+
 // We have the express static module
 // (http://expressjs.com/en/starter/static-files.html) do all the work for us.
-app.use(express.static(__dirname));
+//app.use(express.static(__dirname));
 
 app.get("/", function (request, response) {
   response.send("Simple web server of files from " + __dirname);
