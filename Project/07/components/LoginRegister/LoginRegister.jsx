@@ -1,7 +1,4 @@
 import React from 'react';
-import {
-    AppBar, Toolbar, Typography
-} from '@mui/material';
 import './LoginRegister.css';
 import axios from 'axios';
 
@@ -15,9 +12,31 @@ class LoginRegister extends Component {
         };
     }
 
-    handleLogin = () => {}
+    handleLogin = () => {
+        axios.post('/api/login', {username, password})
+            .then((response) => {
+                this.setState({
+                    loggedIn: true,
+                    firstName: response.data.firstName,
+                });
+            })
+            .catch((error) => {
+                console.error('Login failed:', error);
+            });
+    }
 
-    handleLogout = () => {}
+    handleLogout = () => {
+        axios.post('/api/logout')
+            .then(() => {
+                this.setState({
+                    loggedIn: false,
+                    firstName: '',
+                });
+            })
+            .catch((error) => {
+                console.error('Logout failed:', error);
+            });
+    }
 
 
     render(){
@@ -34,3 +53,5 @@ class LoginRegister extends Component {
         }
     }
 }
+
+export default LoginRegister;
