@@ -58,15 +58,25 @@ class UserDetail extends React.Component {
 
     render() {
         const {user} = this.state;
+        const isLoggedIn = window.models.userModel.isLoggedIn;
+
         if(!user){
             return null;
         }
 
-    const photosLink = "#/photos/" + user._id;
+        const photosLink = "#/photos/" + user._id;
+        const userDetailContent = isLoggedIn ? (
+            <>
+                <p>Hi {user.first_name}</p>
+                <Button href = {photosLink}>User Photos</Button>
+            </>
+        ) : (
+            <p>Please log in to view this user's details.</p>
+        );
+
     return (
         <div className = "user-detail">
-            <p></p>
-            <Button href={photosLink}>User Photos</Button>
+            {userDetailContent}
             <p className={"PageOwner"}>{user.first_name + " " + user.last_name + "'s Profile"}</p>
             <Typography variant = {'caption'} className={"User-ID"}>{`User ID: ${user._id}`}</Typography>
             <hr/>
