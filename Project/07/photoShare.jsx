@@ -13,6 +13,8 @@ import TopBar from './components/topBar/TopBar';
 import UserDetail from './components/userDetail/userDetail';
 import UserList from './components/userList/userList';
 import UserPhotos from './components/userPhotos/userPhotos';
+import LoginRegister from './components/LoginRegister/LoginRegister';
+
 import {border} from "@mui/system";
 
 class PhotoShare extends React.Component {
@@ -51,6 +53,9 @@ class PhotoShare extends React.Component {
               />
               <Route path="/users/:userId"
                 render={ props => <UserDetail {...props} /> }
+              />
+              <Route path="/LoginRegister"
+                     render={ props => <LoginRegister {...props} /> }
               />
               <Route path="/photos/:userId"
                 render ={ props => <UserPhotos {...props} /> }

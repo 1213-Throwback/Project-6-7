@@ -34,17 +34,32 @@ class TopBar extends React.Component {
     }
 
     render() {
-        return this.state.app_info ? (
-            <AppBar className="topbar-appBar" position="absolute">
-                <Toolbar>
-                    <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>Will Russo</Typography>
-                    <Typography variant="h5" component="div" sx={{ flexGrow: 1 }} color="inherit">{this.props.main_content}</Typography>
-                    <Typography variant="h5" component="div" color="inherit">Version: {this.state.app_info.__v}</Typography>
-                </Toolbar>
-            </AppBar>
-        ) : (
-            <div/>
-        );
+        const isLoggedIn = window.models.userModel.isLoggedIn;
+        if (isLoggedIn){
+            return this.state.app_info ? (
+                <AppBar className="topbar-appBar" position="absolute">
+                    <Toolbar>
+                        <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>Will Russo</Typography>
+                        <Typography variant="h5" component="div" sx={{ flexGrow: 1 }} color="inherit">{this.props.main_content}</Typography>
+                        <Typography variant="h5" component="div" color="inherit">Version: {this.state.app_info.__v}</Typography>
+                    </Toolbar>
+                </AppBar>
+            ) : (
+                <div/>
+            );
+        }else{
+            return this.state.app_info ? (
+                <AppBar className="topbar-appBar" position="absolute">
+                    <Toolbar>
+                        <Typography variant="h5" component="div" sx={{ flexGrow: 1 }} color="inherit">{this.props.main_content}</Typography>
+                        <Typography variant="h5" component="div" color="inherit">LOG IN</Typography>
+                    </Toolbar>
+                </AppBar>
+            ) : (
+                <div/>
+            );
+        }
+
     }
 }
 

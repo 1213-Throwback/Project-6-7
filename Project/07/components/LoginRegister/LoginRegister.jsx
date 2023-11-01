@@ -2,7 +2,7 @@ import React from 'react';
 import './LoginRegister.css';
 import axios from 'axios';
 
-class LoginRegister extends Component {
+class LoginRegister extends React.Component {
     constructor(props){
         super(props);
 
@@ -40,6 +40,7 @@ class LoginRegister extends Component {
 
 
     render(){
+        console.log("TESTTTTTT");
         if(this.state.loggedIn){
             return(
                 <div>
@@ -49,7 +50,15 @@ class LoginRegister extends Component {
             );
         }
         else {
-            return <Redirect to = "/login-register" />
+            return (
+                <div>
+                    <div className={"Banner"}>
+                        <h1>Welcome to TikTak</h1>
+                        <h5>The worlds finest data mining platform</h5>
+                    </div>
+                </div>
+            )
+            //return <Redirect to = "/login-register" />
         }
     }
 }

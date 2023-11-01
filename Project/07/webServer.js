@@ -222,8 +222,6 @@ app.get("/user/:id", function (request, response) {
         response.status(500).send(JSON.stringify(err));
         return;
       }
-      console.log(info);
-
       if (info.length === 0) {
         // Query didn't return an error but didn't find the SchemaInfo object -
         // This is also an internal error return.
@@ -232,7 +230,6 @@ app.get("/user/:id", function (request, response) {
       }
 
       // We got the object - return it in JSON format.
-      console.log("SchemaInfo Sepcific Fetch\n\n");
       response.end(JSON.stringify(info[0]));
     });
 });

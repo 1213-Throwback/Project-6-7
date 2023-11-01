@@ -1,10 +1,11 @@
 import React from 'react';
 import {
+    AppBar,
     Button,
     Divider, Link,
     List,
     ListItem,
-    ListItemText,
+    ListItemText, Toolbar,
     Typography,
 }
     from '@mui/material';
@@ -36,21 +37,34 @@ class UserList extends React.Component {
     }
 
   render() {
-        const { userList } = this.state;
-      return (
-          <div className={"UserList"}>
-              <Box sx={{width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}>
-                  {userList.map((item, index) => (
-                      <React.Fragment key={item._id}>
-                          <ListItem>
-                              <Button href={"#/users/" + item._id}>{item.first_name}</Button>
-                          </ListItem>
-                          <Divider />
-                      </React.Fragment>
-                  ))}
-              </Box>
-          </div>
-      );
+      const isLoggedIn = window.models.userModel.isLoggedIn;
+      const { userList } = this.state;
+      if (isLoggedIn){
+          return (
+              <div className={"UserList"}>
+                  <Box sx={{width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}>
+                      {userList.map((item, index) => (
+                          <React.Fragment key={item._id}>
+                              <ListItem>
+                                  <Button href={"#/users/" + item._id}>{item.first_name}</Button>
+                              </ListItem>
+                              <Divider />
+                          </React.Fragment>
+                      ))}
+                  </Box>
+              </div>
+          );
+      }else{
+          return (
+              <div className={"LoggedOutListDIV"}>
+                  <h3 id={"LoggedOutUserListTitle"}>User Lists</h3>
+                  <hr></hr>
+                  <p id={"LoginMessage"}>Log in to view users</p>
+              </div>
+          );
+      }
+
+
   }
 }
 
