@@ -89,7 +89,7 @@ app.use('/auth', router)
 
 // We have the express static module
 // (http://expressjs.com/en/starter/static-files.html) do all the work for us.
-//app.use(express.static(__dirname));
+app.use(express.static(__dirname));
 
 app.get("/", function (request, response) {
   response.send("Simple web server of files from " + __dirname);
