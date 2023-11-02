@@ -7,26 +7,35 @@ class LoginRegister extends Component {
         super(props);
 
         this.state = {
+            username: '',
+            password: '',
             loggedIn: false,
             firstName: '',
+            loginError: '',
         };
     }
 
     handleLogin = () => {
-        axios.post('/api/login', {username, password})
+        const {username, password} = this.state;
+        axios.post('/auth/login', {username, password})
             .then((response) => {
                 this.setState({
                     loggedIn: true,
                     firstName: response.data.firstName,
+                    loginError: '',
                 });
             })
             .catch((error) => {
-                console.error('Login failed:', error);
+                this.setState({
+                    loggedIn:false,
+                    firstName: '',
+                    loginError: 'Login failed. Please try again.',
+                });
             });
     }
 
     handleLogout = () => {
-        axios.post('/api/logout')
+        axios.post('/auth/logout')
             .then(() => {
                 this.setState({
                     loggedIn: false,
@@ -49,7 +58,24 @@ class LoginRegister extends Component {
             );
         }
         else {
-            return <Redirect to = "/login-register" />
+            return (
+                <div>
+                    <p>{this.state.loginError}</p>
+                    <input
+                        type = "text"
+                        placeholder = "Username"
+                        value = {this.state.username}
+                        onChange = {(e) => this.setState({username: e.target.value })}
+                    />
+                    <input
+                        type = "password"
+                        placeholder = "Password"
+                        value = {this.state.password}
+                        onChange = {(e) => this.setState({password: e.target.value })}
+                    />
+                    <button onClick = {this.handleLogin}>Login</button>
+                </div>
+            );
         }
     }
 }
