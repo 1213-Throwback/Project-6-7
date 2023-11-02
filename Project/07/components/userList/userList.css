@@ -1,0 +1,16 @@
+
+#LoggedOutUserListTitle{
+    padding-top: 5px;
+    text-align: center;
+    font-size: 1.5rem;
+    color: black;
+}
+hr{
+    width: 80%;
+    text-align: center;
+}
+#LoginMessage{
+    padding-top: 3px;
+    font-size: 0.8rem;
+    text-align: center;
+}

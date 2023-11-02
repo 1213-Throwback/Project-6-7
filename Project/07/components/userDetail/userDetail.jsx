@@ -66,10 +66,10 @@ class UserDetail extends React.Component {
 
         const photosLink = "#/photos/" + user._id;
         const userDetailContent = isLoggedIn ? (
-            <>
+            <div>
                 <p>Hi {user.first_name}</p>
                 <Button href = {photosLink}>User Photos</Button>
-            </>
+            </div>
         ) : (
             <p>Please log in to view this user's details.</p>
         );
