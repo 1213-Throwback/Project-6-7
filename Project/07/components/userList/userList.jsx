@@ -57,7 +57,7 @@ class UserList extends React.Component {
       }else{
           return (
               <div className={"LoggedOutListDIV"}>
-                  <h3 id={"LoggedOutUserListTitle"}>User Lists</h3>
+                  <h3 id={"LoggedOutUserListTitle"}>User List</h3>
                   <hr></hr>
                   <p id={"LoginMessage"}>Log in to view users</p>
               </div>

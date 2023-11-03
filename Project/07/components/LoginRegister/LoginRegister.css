@@ -1,1 +1,11 @@
-
+*{
+    text-align: center;
+}
+.LoginFields{
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    margin: auto;
+    gap: 10px;
+    padding-top: 20px;
+}

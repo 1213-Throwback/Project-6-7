@@ -1,41 +1,33 @@
 import React from 'react';
 import './LoginRegister.css';
 import axios from 'axios';
+import {TextField} from "@mui/material";
 
-class LoginRegister extends Component {
+class LoginRegister extends React.Component {
     constructor(props){
         super(props);
 
         this.state = {
-            username: '',
-            password: '',
             loggedIn: false,
             firstName: '',
-            loginError: '',
         };
     }
 
     handleLogin = () => {
-        const {username, password} = this.state;
-        axios.post('/auth/login', {username, password})
+        axios.post('/api/login', {username, password})
             .then((response) => {
                 this.setState({
                     loggedIn: true,
                     firstName: response.data.firstName,
-                    loginError: '',
                 });
             })
             .catch((error) => {
-                this.setState({
-                    loggedIn:false,
-                    firstName: '',
-                    loginError: 'Login failed. Please try again.',
-                });
+                console.error('Login failed:', error);
             });
     }
 
     handleLogout = () => {
-        axios.post('/auth/logout')
+        axios.post('/api/logout')
             .then(() => {
                 this.setState({
                     loggedIn: false,
@@ -49,6 +41,7 @@ class LoginRegister extends Component {
 
 
     render(){
+        console.log("TESTTTTTT");
         if(this.state.loggedIn){
             return(
                 <div>
@@ -60,22 +53,19 @@ class LoginRegister extends Component {
         else {
             return (
                 <div>
-                    <p>{this.state.loginError}</p>
-                    <input
-                        type = "text"
-                        placeholder = "Username"
-                        value = {this.state.username}
-                        onChange = {(e) => this.setState({username: e.target.value })}
-                    />
-                    <input
-                        type = "password"
-                        placeholder = "Password"
-                        value = {this.state.password}
-                        onChange = {(e) => this.setState({password: e.target.value })}
-                    />
-                    <button onClick = {this.handleLogin}>Login</button>
+                    <div className={"Banner"}>
+                        <h1>Welcome to TikTak</h1>
+                        <h5>The worlds finest data mining platform</h5>
+                    </div>
+                    <div className={"LoginFields"}>
+                        <TextField id={"UserName"} label="Username" variant="filled"></TextField>
+                        <TextField id={"Password"} label="Password" variant="filled"></TextField>
+                    </div>
                 </div>
-            );
+            )
+            //return <Redirect to = "/login-register" />
         }
     }
 }
+
+export default LoginRegister;

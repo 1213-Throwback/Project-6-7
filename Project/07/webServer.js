@@ -56,7 +56,7 @@ mongoose.connect("mongodb://127.0.0.1/project6", {
   useUnifiedTopology: true,
 });
 
-router.post('/auth/login', (req, res) => {
+router.post('/login', (req, res) => {
   const {username, password} = req.body;
 
   User.findOne({username,password}, (err,user) => {
@@ -70,22 +70,17 @@ router.post('/auth/login', (req, res) => {
         if(saveErr){
           return res.status(500).json({ message: 'Failed to save login status' });
         }
-        return res.status(200).json({ message: 'Login successful', firstName: user.first_name });
+        return res.status(200).json({ message: 'Login successful' });
       });
     }
     else {
-      return res.status(401).json({ message: 'Invalid Username or Password' });
+      return res.status(401).json({ message: 'Login failed' });
     }
   });
 });
 
-router.post('/auth/logout', (req, res) => {
-  User.updateMany({}, {isLoggedIn: false}, (err) => {
-    if(err){
-      return res.status(500).json({ message: 'Logout failed' });
-    }
-      return res.status(200).json({ message: 'Logout successful' });
-  });
+router.post('/logout', (req, res) => {
+  return res.status(200).json({ message: 'Logout successful' });
 });
 
 module.exports = router;

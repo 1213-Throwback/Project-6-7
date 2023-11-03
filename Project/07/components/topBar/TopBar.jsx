@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    AppBar, Toolbar, Typography
+    AppBar, Button, Toolbar, Typography
 } from '@mui/material';
 import './TopBar.css';
 import axios from 'axios';
@@ -41,7 +41,7 @@ class TopBar extends React.Component {
                     <Toolbar>
                         <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>Will Russo</Typography>
                         <Typography variant="h5" component="div" sx={{ flexGrow: 1 }} color="inherit">{this.props.main_content}</Typography>
-                        <Typography variant="h5" component="div" color="inherit">Version: {this.state.app_info.__v}</Typography>
+                        <a href={"#/LoginRegister"} className={"UniversalLog"}>Log out</a>
                     </Toolbar>
                 </AppBar>
             ) : (
@@ -52,7 +52,7 @@ class TopBar extends React.Component {
                 <AppBar className="topbar-appBar" position="absolute">
                     <Toolbar>
                         <Typography variant="h5" component="div" sx={{ flexGrow: 1 }} color="inherit">{this.props.main_content}</Typography>
-                        <Typography variant="h5" component="div" color="inherit">LOG IN</Typography>
+                            <a href={"#/LoginRegister"} className={"UniversalLog"}>Log in</a>
                     </Toolbar>
                 </AppBar>
             ) : (
