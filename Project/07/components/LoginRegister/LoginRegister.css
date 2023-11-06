@@ -1,11 +1,22 @@
 *{
     text-align: center;
 }
-.LoginFields{
+.vertical{
     display: flex;
     flex-direction: column;
     width: 40%;
     margin: auto;
     gap: 10px;
     padding-top: 20px;
+}
+
+.hidden{
+    display: none
+}
+
+
+
+#hideRegBtn, #loginBtn, #registerBtn, #hideLoginBtn{
+    align-self: center;
+    width: fit-content;
 }

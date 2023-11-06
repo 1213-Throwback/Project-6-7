@@ -88,6 +88,26 @@ router.post('/auth/logout', (req, res) => {
   });
 });
 
+router.post('/api/register', (req, res) => {
+  const {username, password} = req.body;
+  const newUser = new User({
+    name: username,
+    password: password
+  });
+  User.insertMany(
+      [
+        {
+          name: username,
+          password: password
+        }
+      ],
+      (err, res) => {
+        if (err) return handleError(err);
+        else return console.log("Result: ", res)
+      }
+  );
+});
+
 module.exports = router;
 
 app.use('/auth', router)
