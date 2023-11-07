@@ -15,7 +15,6 @@ const userSchema = new mongoose.Schema({
   occupation: String,
   isLoggedIn: {type: Boolean, default: false },
   // The following attributes need to be added
-  _id: mongoose.Schema.Types.ObjectId,
 });
 
 /**

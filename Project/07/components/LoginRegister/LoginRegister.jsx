@@ -1,4 +1,3 @@
-
 import React from 'react';
 import './LoginRegister.css';
 import axios from 'axios';
@@ -29,15 +28,34 @@ class LoginRegister extends React.Component {
         this.handleLogin = this.handleLogin.bind(this);
         this.handleRegister = this.handleRegister.bind(this);
 
-
     }
 
 
-    handleRegister = (username = this.state.fieldUserName, password = this.state.fieldPassword) => {
-        axios.post('/api/register' + "{" + '"' + "username" + '"' + ':' + username + ','+ '"'+ "password" + ":" + password + "}")
+    handleRegister = () => {
+        const {
+            fieldFirstName,
+            fieldLastName,
+            fieldOccupation,
+            fieldDescription,
+            fieldLocation,
+            fieldUserName,
+            fieldPassword,
+        } = this.state;
+
+        const user = {
+            first_name: fieldFirstName,
+            last_name: fieldLastName,
+            occupation: fieldOccupation,
+            description: fieldDescription,
+            location: fieldLocation,
+            username: fieldUserName,
+            password:fieldPassword,
+        };
+
+        axios.post('/api/register', user)
             .then((response) => {
                 this.setState({
-                    loggedIn: true,
+                    loggedIn:true,
                     firstName: response.data.firstName,
                 });
             })
@@ -47,7 +65,8 @@ class LoginRegister extends React.Component {
     }
 
     handleLogin = () => {
-        axios.post('/api/login', {username, password})
+        const { fieldUserName, fieldPassword } = this.state;
+        axios.post('/auth/login', { username: fieldUserName, password: fieldPassword })
             .then((response) => {
                 this.setState({
                     loggedIn: true,
@@ -58,8 +77,9 @@ class LoginRegister extends React.Component {
                 console.error('Login failed:', error);
             });
     }
+
     handleLogout = () => {
-        axios.post('/api/logout')
+        axios.post('/auth/logout')
             .then(() => {
                 this.setState({
                     loggedIn: false,
