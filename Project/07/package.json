@@ -5,6 +5,8 @@
   "description": "Project 6: Appserver and Database (React)",
   "main": "webServer.js",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js",
     "build": "webpack --devtool eval-cheap-module-source-map",
     "build:w": "webpack --devtool eval-cheap-module-source-map --watch",
     "lint": "eslint webServer.js loadDatabase.js *.jsx components/*/*.jsx || exit 0"
@@ -30,7 +32,6 @@
     "js-yaml": "^4.1.0",
     "mongodb": "^6.2.0",
     "mongoose": "^6.2.1",
-    "nodemon": "^2.0.16",
     "prismjs": "^1.26.0",
     "promise": "^8.1.0",
     "react": "^17.0.0",
@@ -55,6 +56,7 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.29.4",
+    "nodemon": "^3.0.1",
     "ssri": "^9.0.0",
     "style-loader": "^3.3.1",
     "webpack": "^5.72.0",
