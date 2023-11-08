@@ -38,13 +38,17 @@ const async = require("async");
 
 const express = require("express");
 const app = express();
+const bodyParser = require("body-parser");
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Load the Mongoose schema for User, Photo, and SchemaInfo
 const User = require("./schema/user.js");
 const Photo = require("./schema/photo.js");
 const SchemaInfo = require("./schema/schemaInfo.js");
-const ObjectId = require('mongodb').ObjectId;
-const Type = require('mongodb').Type;
+// const ObjectId = require('mongodb').ObjectId;
+// const Type = require('mongodb').Type;
 const router = express.Router();
 
 // XXX - Your submission should work without this line. Comment out or delete
@@ -57,31 +61,30 @@ mongoose.connect("mongodb://127.0.0.1/project6", {
 });
 
 router.post('/auth/login', (req, res) => {
-  const {username, password} = req.body;
+  const { username, password } = req.body;
 
-  User.findOne({username,password}, (err,user) => {
-    if(err){
-      return res.status(500).json({message: 'Server error'});
+  User.findOne({ username, password }, (err, user) => {
+    if (err) {
+      return res.status(500).json({ message: 'Server error' });
     }
 
-    if(user){
+    if (user) {
       user.isLoggedIn = true;
       user.save((saveErr) => {
-        if(saveErr){
+        if (saveErr) {
           return res.status(500).json({ message: 'Failed to save login status' });
         }
-        return res.status(200).json({ message: 'Login successful', firstName: user.first_name  });
+        return res.status(200).json({ message: 'Login successful', firstName: user.first_name });
       });
-    }
-    else {
+    } else {
       return res.status(401).json({ message: 'Invalid Username or Password' });
     }
   });
 });
 
 router.post('/auth/logout', (req, res) => {
-  User.updateMany({}, {isLoggedIn: false}, (err) => {
-    if(err){
+  User.updateMany({}, { isLoggedIn: false }, (err) => {
+    if (err) {
       return res.status(500).json({ message: 'Logout failed' });
     }
     return res.status(200).json({ message: 'Logout successful' });
@@ -89,24 +92,35 @@ router.post('/auth/logout', (req, res) => {
 });
 
 router.post('/api/register', (req, res) => {
-  const {username, password} = req.body;
+  const {
+    first_name,
+    last_name,
+    occupation,
+    description,
+    location,
+    username,
+    password,
+  } = req.body;
+
   const newUser = new User({
-    name: username,
-    password: password
+    first_name,
+    last_name,
+    occupation,
+    description,
+    location,
+    username,
+    password,
   });
-  User.insertMany(
-      [
-        {
-          name: username,
-          password: password
-        }
-      ],
-      (err, res) => {
-        if (err) return handleError(err);
-        else return console.log("Result: ", res)
-      }
-  );
+
+  newUser.save((err, user) => {
+    if (err) {
+      res.status(400).json({ message: 'Failed to register user' });
+    } else {
+      res.status(200).json({ message: 'Registration successful', firstName: user.first_name });
+    }
+  });
 });
+
 
 module.exports = router;
 
