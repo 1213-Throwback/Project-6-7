@@ -6,7 +6,6 @@ import {
 import {
   Grid, Paper
 } from '@mui/material';
-import '../../../../Downloads/p7/styles/main.css';
 
 // import necessary components
 import TopBar from './components/topBar/TopBar';
