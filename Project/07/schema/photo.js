@@ -11,7 +11,7 @@ const commentSchema = new mongoose.Schema({
   // The date and time when the comment was created.
   date_time: { type: Date, default: Date.now },
   // user who created the comment.
-  user: mongoose.Schema.Types.ObjectId,
+  user_id: mongoose.Schema.Types.ObjectId,
   // comment id
   _id: mongoose.Schema.Types.ObjectId
 });
